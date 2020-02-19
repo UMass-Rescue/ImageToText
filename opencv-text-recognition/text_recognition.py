@@ -204,10 +204,10 @@ for padding in [0.0, 0.005, 0.05, 0.1]:
 		doc = nlp(final_text_str)
 
 		if doc.ents == ():
-			file_dict[final_text_str].add(image_file)
+			file_dict[final_text_str + ' (other)' ].add(image_file)
 
 		for ent in doc.ents:
-			file_dict[ent.text].add(image_file)
+			file_dict[ent.text + ' (' + ent.label_ + ')'].add(image_file)
 
 sorted_counts = {k: v for k, v in sorted(file_dict.items(), key=lambda item: len(item[1]), reverse=True)}
 
