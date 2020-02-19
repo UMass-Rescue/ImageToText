@@ -37,3 +37,4 @@ src/AmherstMA_projected.pkl
 *.pkl
 *.pyc
 *.pyc
+opencv-text-recognition/.mypy_cache/*
