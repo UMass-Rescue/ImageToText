@@ -8,6 +8,7 @@ import numpy as np
 import pytesseract
 import argparse
 import cv2
+import spacy
 
 def decode_predictions(scores, geometry):
 	# grab the number of rows and columns from the scores volume, then
@@ -81,6 +82,9 @@ ap.add_argument("-e", "--height", type=int, default=320,
 ap.add_argument("-p", "--padding", type=float, default=0.0,
 	help="amount of padding to add to each border of ROI")
 args = vars(ap.parse_args())
+
+# load spacy model
+nlp = spacy.load("en_core_web_md")
 
 # load the input image and grab the image dimensions
 image = cv2.imread(args["image"])
@@ -161,6 +165,7 @@ for (startX, startY, endX, endY) in boxes:
 
 # sort the results bounding box coordinates from top to bottom
 results = sorted(results, key=lambda r:r[0][1])
+final_text = []
 
 # loop over the results
 for ((startX, startY, endX, endY), text) in results:
@@ -168,6 +173,7 @@ for ((startX, startY, endX, endY), text) in results:
 	print("OCR TEXT")
 	print("========")
 	print("{}\n".format(text))
+	final_text.append(text)
 
 	# strip out non-ASCII text so we can draw the text on the image
 	# using OpenCV, then draw the text and a bounding box surrounding
@@ -180,5 +186,11 @@ for ((startX, startY, endX, endY), text) in results:
 		cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 255), 3)
 
 	# show the output image
-	cv2.imshow("Text Detection", output)
-	cv2.waitKey(0)
+	# cv2.imshow("Text Detection", output)
+	# cv2.waitKey(0)
+
+final_text_str = ' '.join(final_text)
+doc = nlp(final_text_str)
+
+for ent in doc.ents:
+	print(ent.text, ent.label_)
