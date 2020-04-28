@@ -1,5 +1,5 @@
 # USAGE
-# python text_recognition.py --east frozen_east_text_detection.pb --folder images/example_01.jpg
+# python text_recognition.py --east frozen_east_text_detection.pb --folder images
 
 from imutils.object_detection import non_max_suppression
 import numpy as np
@@ -71,6 +71,8 @@ def decode_predictions(scores, geometry):
 ap = argparse.ArgumentParser()
 ap.add_argument("-f", "--folder", type=str,
 	help="path to input folder")
+ap.add_argument("-v", "--visualize", action='store_true',
+	help="visualize text detection")
 ap.add_argument("-east", "--east", type=str,
 	help="path to input EAST text detector")
 ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
@@ -86,12 +88,14 @@ folder = args["folder"]
 if folder[-1] != '/':
 	folder += '/'
 
+visualize = args["visualize"]
+
 # load spacy model
 nlp = spacy.load("en_core_web_md")
 file_dict = defaultdict(set) # record file names where entities were found
 
 # iterate over multiple padding values to get best results
-for padding in [0.0, 0.005, 0.05, 0.1]:
+for padding in [0.005, 0.05, 0.1]:
 	for image_file in os.listdir(args["folder"]):
 		# ignore hidden files
 		if image_file.startswith("."):
@@ -197,22 +201,22 @@ for padding in [0.0, 0.005, 0.05, 0.1]:
 				cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 255), 3)
 
 			# show the output image
-			# cv2.imshow("Text Detection", output)
-			# cv2.waitKey(0)
+			if visualize:
+				cv2.imshow("Text Detection", output)
+				cv2.waitKey(0)
 
 		final_text_str = ' '.join(final_text)
 		doc = nlp(final_text_str)
 
 		if doc.ents == ():
-			file_dict[final_text_str + ' (other)' ].add(image_file)
-
-		for ent in doc.ents:
-			file_dict[ent.text + ' (' + ent.label_ + ')'].add(image_file)
+			file_dict[final_text_str + ' <other>' ].add(image_file)
+		else:
+			for ent in doc.ents:
+				file_dict[ent.text + ' <' + ent.label_ + '>'].add(image_file)
 
 sorted_counts = {k: v for k, v in sorted(file_dict.items(), key=lambda item: len(item[1]), reverse=True)}
 
 # write to file in sorted order
-with open('counts.txt', 'w') as count_file, open('img_list.txt', 'w') as img_file:
+with open('counts.txt', 'w') as count_file:
 	for key in sorted_counts.keys():
-		count_file.write('{}, {}\n'.format(key, len(file_dict[key])))
-		img_file.write('{}, {}\n'.format(key, file_dict[key]))
+		count_file.write('{}, {}, {}\n'.format(key, len(file_dict[key]), file_dict[key]))
