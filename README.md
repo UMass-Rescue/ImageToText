@@ -30,6 +30,6 @@ The program, in addition to visualizing, performs named entity recognition on th
 This code was run on osx (mac OS Catalina 10.15.3), using python 3.6
 
 ### Benchmarks
-The EAST detector used for text detection, when tested on the ICDAR 2015 Challenge 4 Incidental Scene Text Localization task, achieves `0.83` Precision, `0.78` Recall, and an F1 score of `0.8`. However, one must note that this system was trained for scene text localization, so your mileage may vary.
+The [EAST detector](https://arxiv.org/abs/1704.03155) used for text detection, when tested on the ICDAR 2015 Challenge 4 Incidental Scene Text Localization task, achieves `0.83` Precision, `0.78` Recall, and an F1 score of `0.8`. However, one must note that this system was trained for scene text localization, so your mileage may vary.
 
 It takes about `7` seconds to process each image on my machine, but again, YMMV.
