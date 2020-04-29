@@ -26,7 +26,7 @@ https://repo.anaconda.com/pkgs/main/osx-64/libffi-3.2.1-h475c297_4.tar.bz2
 https://conda.anaconda.org/conda-forge/osx-64/libopenblas-0.3.7-hd44dcd8_1.tar.bz2
 https://conda.anaconda.org/conda-forge/osx-64/libpng-1.6.37-h2573ce8_0.tar.bz2
 https://conda.anaconda.org/conda-forge/osx-64/lz4-c-1.8.3-h6de7cb9_1001.tar.bz2
-https://conda.anaconda.org/anaconda/osx-64/mkl-2019.5-281.tar.bz2
+https://conda.anaconda.org/anaconda/osx-64/mkl-2019.3-199.tar.bz2
 https://repo.anaconda.com/pkgs/main/osx-64/ncurses-6.1-h0a44026_1.tar.bz2
 https://conda.anaconda.org/conda-forge/osx-64/openh264-1.8.0-hd9629dc_1000.tar.bz2
 https://conda.anaconda.org/conda-forge/osx-64/openssl-1.0.2u-h0b31af3_0.tar.bz2
